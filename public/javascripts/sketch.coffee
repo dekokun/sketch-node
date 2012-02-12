@@ -7,9 +7,9 @@ window.addEventListener "load", (->
   canvas_others.height = window.innerHeight - 30
   ctx = canvas.getContext("2d")
   ctx_others = canvas_others.getContext("2d")
-  ctx.lineWidth = 5
+  ctx.lineWidth = 1
   ctx.strokeStyle = "#9eala3"
-  ctx_others.lineWidth = 5
+  ctx_others.lineWidth = 1
   ctx_others.strokeStyle = "#9eala3"
   remote_down = false
   socket = io.connect "http://192.168.11.4"
