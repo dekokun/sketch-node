@@ -1,10 +1,16 @@
 window.addEventListener "load", (->
-  canvas = document.getElementById("canvas")
+  canvas = document.getElementById("canvas_mine")
+  canvas_others = document.getElementById("canvas_others")
   canvas.width = window.innerWidth - 30
   canvas.height = window.innerHeight - 30
+  canvas_others.width = window.innerWidth - 30
+  canvas_others.height = window.innerHeight - 30
   ctx = canvas.getContext("2d")
+  ctx_others = canvas_others.getContext("2d")
   ctx.lineWidth = 5
   ctx.strokeStyle = "#9eala3"
+  ctx_others.lineWidth = 5
+  ctx_others.strokeStyle = "#9eala3"
   remote_down = false
   socket = io.connect "http://192.168.11.4"
   socket.on "connect", (data) ->
@@ -16,18 +22,18 @@ window.addEventListener "load", (->
     switch data.act
       when "down"
         remote_down = true
-        ctx.strokeStyle = data.color
-        ctx.beginPath()
-        ctx.moveTo data.x, data.y
+        ctx_others.strokeStyle = data.color
+        ctx_others.beginPath()
+        ctx_others.moveTo data.x, data.y
       when "move"
         console.log "remote: " + data.x, data.y
-        ctx.lineTo data.x, data.y
-        ctx.stroke()
+        ctx_others.lineTo data.x, data.y
+        ctx_others.stroke()
       when "up"
         return  unless remote_down
-        ctx.lineTo data.x, data.y
-        ctx.stroke()
-        ctx.closePath()
+        ctx_others.lineTo data.x, data.y
+        ctx_others.stroke()
+        ctx_others.closePath()
         remote_down = false
 
   down = false
