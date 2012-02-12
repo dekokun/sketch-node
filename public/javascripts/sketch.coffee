@@ -40,6 +40,7 @@ window.addEventListener "load", (->
         remote_down = false
   socket.on "clear", ->
     clear canvas_others
+    clear canvas
 
   down = false
   canvas.addEventListener "mousedown", ((e) ->
@@ -78,8 +79,9 @@ window.addEventListener "load", (->
   ), false
   clear_button = document.getElementById("clear")
   clear_button.addEventListener "click", ((e) ->
-    clear canvas
     socket.emit "clear"
+    clear canvas_others
+    clear canvas
   ), false
 
 

@@ -44,7 +44,8 @@
       }
     });
     socket.on("clear", function() {
-      return clear(canvas_others);
+      clear(canvas_others);
+      return clear(canvas);
     });
     down = false;
     canvas.addEventListener("mousedown", (function(e) {
@@ -83,8 +84,9 @@
     }), false);
     clear_button = document.getElementById("clear");
     clear_button.addEventListener("click", (function(e) {
-      clear(canvas);
-      return socket.emit("clear");
+      socket.emit("clear");
+      clear(canvas_others);
+      return clear(canvas);
     }), false);
     colors = document.getElementById("colors").childNodes;
     i = 0;
