@@ -1,86 +1,89 @@
-window.addEventListener('load', function(){
+(function() {
 
-    var canvas = document.getElementById('canvas');
-    canvas.width = window.innerWidth -30;
-    canvas.height = window.innerHeight -30;
-
-    var ctx = canvas.getContext('2d');
+  window.addEventListener("load", (function() {
+    var canvas, color, colors, ctx, down, i, remote_down, socket, _results;
+    canvas = document.getElementById("canvas");
+    canvas.width = window.innerWidth - 30;
+    canvas.height = window.innerHeight - 30;
+    ctx = canvas.getContext("2d");
     ctx.lineWidth = 5;
-    ctx.strokeStyle = '#9eala3';
-
-    var remote_down = false;
-
-    var socket = new io.Socket();
-    socket.connect();
-    socket.on('connect', function(data) {
-        console.log("connect session: " + socket.transport.sessionid);
+    ctx.strokeStyle = "#9eala3";
+    remote_down = false;
+    socket = io.connect("http://192.168.11.4");
+    socket.on("connect", function(data) {
+      return console.log("connect");
     });
-
-    socket.on('message', function(data) {
-
-        switch (data.act) {
-            case "down":
-                remote_down = true;
-                ctx.strokeStyle = data.color;
-                ctx.beginPath();
-                ctx.moveTo(data.x, data.y);
-            case "move":
-                console.log("remote: " + data.x, data.y);
-                ctx.lineTo(data.x, data.y);
-                ctx.stroke();
-            case "up":
-                if (!remote_down) return;
-                ctx.lineTo(data.x, data.y);
-                ctx.stroke();
-                ctx.closePath();
-                remote_down = false;
-        }
+    socket.on("message", function(data) {
+      console.log("メッセージを受け取りました");
+      console.dir(data);
+      switch (data.act) {
+        case "down":
+          remote_down = true;
+          ctx.strokeStyle = data.color;
+          ctx.beginPath();
+          return ctx.moveTo(data.x, data.y);
+        case "move":
+          console.log("remote: " + data.x, data.y);
+          ctx.lineTo(data.x, data.y);
+          return ctx.stroke();
+        case "up":
+          if (!remote_down) return;
+          ctx.lineTo(data.x, data.y);
+          ctx.stroke();
+          ctx.closePath();
+          return remote_down = false;
+      }
     });
-
-    var down = false;
-    canvas.addEventListener('mousedown', function (e) {
-        down = true;
-        ctx.beginPath();
-        ctx.moveTo(e.clientX, e.clientY);
-        socket.send({
-            act: "down",
-            x: e.clientX,
-            y: e.clientY,
-            color: ctx.strokeStyle
-        });
-    }, false);
-    window.addEventListener('mousemove', function (e) {
-        if (!down) return;
-        console.log(e.clientX, e.clientY);
-        ctx.lineTo(e.clientX, e.clientY);
-        ctx.stroke();
-        socket.send({
-            act: "move",
-            x: e.clientX,
-            y: e.clientY,
-        });
-    }, false);
-    window.addEventListener('mouseup', function (e) {
-        if (!down) return;
-        ctx.lineTo(e.clientX, e.clientY);
-        ctx.stroke();
-        ctx.closePath();
-        down = false;
-        socket.send({
-            act: "up",
-            x: e.clientX,
-            y: e.clientY,
-        });
-    }, false);
-
-    var colors = document.getElementById('colors').childNodes;
-    for (var i = 0, color; color = colors[i]; i++) {
-        if (color.nodeName.toLowerCase() != 'div') continue;
-        color.addEventListener('click', function (e) {
-            var style = e.target.getAttribute('style');
-            var color = style.match(/background:(#......)/)[1];
-            ctx.strokeStyle = color;
-        }, false);
+    down = false;
+    canvas.addEventListener("mousedown", (function(e) {
+      down = true;
+      ctx.beginPath();
+      ctx.moveTo(e.clientX, e.clientY);
+      return socket.emit("message", {
+        act: "down",
+        x: e.clientX,
+        y: e.clientY,
+        color: ctx.strokeStyle
+      });
+    }), false);
+    window.addEventListener("mousemove", (function(e) {
+      if (!down) return;
+      console.log(e.clientX, e.clientY);
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
+      return socket.emit("message", {
+        act: "move",
+        x: e.clientX,
+        y: e.clientY
+      });
+    }), false);
+    window.addEventListener("mouseup", (function(e) {
+      if (!down) return;
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
+      ctx.closePath();
+      down = false;
+      return socket.emit("message", {
+        act: "up",
+        x: e.clientX,
+        y: e.clientY
+      });
+    }), false);
+    colors = document.getElementById("colors").childNodes;
+    i = 0;
+    color = void 0;
+    _results = [];
+    while (color = colors[i]) {
+      if (color.nodeName.toLowerCase() !== "div") continue;
+      color.addEventListener("click", (function(e) {
+        var style;
+        style = e.target.getAttribute("style");
+        color = style.match(/background:(#......)/)[1];
+        return ctx.strokeStyle = color;
+      }), false);
+      _results.push(i++);
     }
-}, false);
+    return _results;
+  }), false);
 
+}).call(this);

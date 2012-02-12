@@ -1,52 +1,45 @@
-/**
- * Module dependencies.
- */
+(function() {
+  var app, express, io, routes;
 
-var PORT = 3030;
-var express = require('express');
-io = require('socket.io');
+  express = require("express");
 
-var app = module.exports = express.createServer();
+  routes = require("./routes");
 
-// Configuration
+  app = module.exports = express.createServer();
 
-app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler()); 
-});
-
-// socket.io
-var socket = io.listen(app);
-socket.on('connection', function(client) {
-    client.on('message', function(data) {
-      client.broadcast(data);
-    });
-});
-
-
-// Routes
-app.get('/', function(req, res){
-  console.log(req);
-  res.render('index', {
-    title: 'SocketSketch'
+  app.configure(function() {
+    app.set("views", __dirname + "/views");
+    app.set("view engine", "jade");
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    return app.use(express.static(__dirname + "/public"));
   });
-});
 
-// Only listen on $ node app.js
+  app.configure("development", function() {
+    return app.use(express.errorHandler({
+      dumpExceptions: true,
+      showStack: true
+    }));
+  });
 
-if (!module.parent) {
-  app.listen(PORT);
-  console.log("Express server listening on port %d", app.address().port);
-}
+  app.configure("production", function() {
+    return app.use(express.errorHandler());
+  });
+
+  io = require("socket.io").listen(app);
+
+  io.sockets.on("connection", function(socket) {
+    return socket.on("message", function(data) {
+      socket.broadcast.emit("message", data);
+      return console.log(data);
+    });
+  });
+
+  app.get("/", routes.index);
+
+  app.listen(3000);
+
+  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+}).call(this);
