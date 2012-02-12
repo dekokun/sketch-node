@@ -30,9 +30,13 @@
   io = require("socket.io").listen(app);
 
   io.sockets.on("connection", function(socket) {
-    return socket.on("message", function(data) {
+    socket.on("message", function(data) {
       socket.broadcast.emit("message", data);
       return console.log(data);
+    });
+    return socket.on("clear", function() {
+      socket.broadcast.emit("clear");
+      return console.log("clear");
     });
   });
 

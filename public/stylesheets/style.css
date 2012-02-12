@@ -24,7 +24,7 @@ html, body {
     box-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 
-#colors {
+#colors, #clear {
     display: inline-block;
     padding: 10px;
 }
@@ -44,4 +44,12 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+button {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+  -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+  -moz-box-shadow: 1px 1px 2px #E7E7E7;
 }

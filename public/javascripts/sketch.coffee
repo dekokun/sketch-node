@@ -16,6 +16,9 @@ window.addEventListener "load", (->
   socket.on "connect", (data) ->
     console.log "connect"
 
+  clear = (canvas)->
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
+
   socket.on "message", (data) ->
     console.log "メッセージを受け取りました"
     console.dir data
@@ -35,6 +38,8 @@ window.addEventListener "load", (->
         ctx_others.stroke()
         ctx_others.closePath()
         remote_down = false
+  socket.on "clear", ->
+    clear canvas_others
 
   down = false
   canvas.addEventListener "mousedown", ((e) ->
@@ -71,6 +76,13 @@ window.addEventListener "load", (->
       y: e.clientY
     }
   ), false
+  clear_button = document.getElementById("clear")
+  clear_button.addEventListener "click", ((e) ->
+    clear canvas
+    socket.emit "clear"
+  ), false
+
+
   colors = document.getElementById("colors").childNodes
   i = 0
   color = undefined

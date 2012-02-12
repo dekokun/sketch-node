@@ -23,6 +23,9 @@ io.sockets.on "connection", (socket) ->
   socket.on "message", (data) ->
     socket.broadcast.emit "message", data
     console.log data
+  socket.on "clear",  ->
+    socket.broadcast.emit "clear"
+    console.log "clear"
 
 app.get "/", routes.index
 app.listen 3000

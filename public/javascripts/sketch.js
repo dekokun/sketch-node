@@ -1,7 +1,7 @@
 (function() {
 
   window.addEventListener("load", (function() {
-    var canvas, canvas_others, color, colors, ctx, ctx_others, down, i, remote_down, socket, _results;
+    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, remote_down, socket, _results;
     canvas = document.getElementById("canvas_mine");
     canvas_others = document.getElementById("canvas_others");
     canvas.width = window.innerWidth - 30;
@@ -19,6 +19,9 @@
     socket.on("connect", function(data) {
       return console.log("connect");
     });
+    clear = function(canvas) {
+      return canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    };
     socket.on("message", function(data) {
       console.log("メッセージを受け取りました");
       console.dir(data);
@@ -39,6 +42,9 @@
           ctx_others.closePath();
           return remote_down = false;
       }
+    });
+    socket.on("clear", function() {
+      return clear(canvas_others);
     });
     down = false;
     canvas.addEventListener("mousedown", (function(e) {
@@ -74,6 +80,11 @@
         x: e.clientX,
         y: e.clientY
       });
+    }), false);
+    clear_button = document.getElementById("clear");
+    clear_button.addEventListener("click", (function(e) {
+      clear(canvas);
+      return socket.emit("clear");
     }), false);
     colors = document.getElementById("colors").childNodes;
     i = 0;
