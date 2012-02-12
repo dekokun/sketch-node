@@ -11,6 +11,13 @@ window.addEventListener "load", (->
   ctx.strokeStyle = "#9eala3"
   ctx_others.lineWidth = 1
   ctx_others.strokeStyle = "#9eala3"
+
+  test_image = new Image
+  test_image.src = "/image/grade5-3.jpg"
+  console.dir test_image
+  test_image.onload = ->
+    ctx_others.drawImage test_image, 0, 0
+
   remote_down = false
   socket = io.connect "http://192.168.11.4"
   socket.on "connect", (data) ->

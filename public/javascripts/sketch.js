@@ -1,7 +1,7 @@
 (function() {
 
   window.addEventListener("load", (function() {
-    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, remote_down, socket, _results;
+    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, remote_down, socket, test_image, _results;
     canvas = document.getElementById("canvas_mine");
     canvas_others = document.getElementById("canvas_others");
     canvas.width = window.innerWidth - 30;
@@ -14,6 +14,12 @@
     ctx.strokeStyle = "#9eala3";
     ctx_others.lineWidth = 1;
     ctx_others.strokeStyle = "#9eala3";
+    test_image = new Image;
+    test_image.src = "/image/grade5-3.jpg";
+    console.dir(test_image);
+    test_image.onload = function() {
+      return ctx_others.drawImage(test_image, 0, 0);
+    };
     remote_down = false;
     socket = io.connect("http://192.168.11.4");
     socket.on("connect", function(data) {
