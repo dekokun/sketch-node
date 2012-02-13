@@ -103,7 +103,8 @@
       color.addEventListener("click", (function(e) {
         var style;
         style = e.target.getAttribute("style");
-        color = style.match(/background:(#......)/)[1];
+        color = style.match(/background:(rgba.*,.*,.*,.*\))/)[1];
+        console.log(color);
         return ctx.strokeStyle = color;
       }), false);
       _results.push(i++);
