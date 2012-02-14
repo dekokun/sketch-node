@@ -21,7 +21,7 @@
       return ctx_others.drawImage(test_image, 0, 0);
     };
     remote_down = false;
-    socket = io.connect;
+    socket = io.connect();
     socket.on("connect", function(data) {
       return console.log("connect");
     });
