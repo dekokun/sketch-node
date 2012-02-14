@@ -19,7 +19,7 @@ window.addEventListener "load", (->
     ctx_others.drawImage test_image, 0, 0
 
   remote_down = false
-  socket = io.connect "http://192.168.11.4"
+  socket = io.connect()
   socket.on "connect", (data) ->
     console.log "connect"
 
