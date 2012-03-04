@@ -1,9 +1,15 @@
 {
-    "name": "application-name"
+    "name": "sketch-node"
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": "2.5.5"
+      "express": ">= 0.0.1"
     , "jade": ">= 0.0.1"
+    , "socket.io": ">= 0.0.1"
+    , "jasmine-node": ">= 0.0.1"
   }
+  , "scripts": {
+      "test": "jasmine-node --coffee spec"
+    , "start": "node app.js"
+    }
 }
