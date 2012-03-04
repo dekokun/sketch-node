@@ -29,8 +29,6 @@
       return canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
     };
     socket.on("message", function(data) {
-      console.log("メッセージを受け取りました");
-      console.dir(data);
       switch (data.act) {
         case "down":
           remote_down = true;
