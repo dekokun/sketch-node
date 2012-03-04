@@ -19,7 +19,7 @@ window.addEventListener "load", (->
     ctx_others.drawImage test_image, 0, 0
 
   remote_down = false
-  socket = io.connect "http://192.168.11.4"
+  socket = io.connect()
   socket.on "connect", (data) ->
     console.log "connect"
 
@@ -98,7 +98,8 @@ window.addEventListener "load", (->
     continue  unless color.nodeName.toLowerCase() is "div"
     color.addEventListener "click", ((e) ->
       style = e.target.getAttribute("style")
-      color = style.match(/background:(#......)/)[1]
+      color = style.match(/background:(rgba.*,.*,.*,.*\))/)[1]
+      console.log color
       ctx.strokeStyle = color
     ), false
     i++

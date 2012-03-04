@@ -21,7 +21,7 @@
       return ctx_others.drawImage(test_image, 0, 0);
     };
     remote_down = false;
-    socket = io.connect("http://192.168.11.4");
+    socket = io.connect();
     socket.on("connect", function(data) {
       return console.log("connect");
     });
@@ -101,7 +101,8 @@
       color.addEventListener("click", (function(e) {
         var style;
         style = e.target.getAttribute("style");
-        color = style.match(/background:(#......)/)[1];
+        color = style.match(/background:(rgba.*,.*,.*,.*\))/)[1];
+        console.log(color);
         return ctx.strokeStyle = color;
       }), false);
       _results.push(i++);
