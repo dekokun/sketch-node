@@ -11,6 +11,5 @@
   , "scripts": {
       "test": "jasmine-node --coffee spec"
     , "start": "node app.js"
-    }
   }
 }
