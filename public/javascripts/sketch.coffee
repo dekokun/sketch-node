@@ -25,6 +25,14 @@ window.addEventListener "load", (->
 
   clear = (canvas)->
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
+  save = (canvas, key)->
+    Base64Coded = canvas.toDataURL()
+    window.localStorage[key] = Base64Coded
+  load = (canvas, key)->
+    Data = window.localStorage[key]
+    img = new Image()
+    img.src = Data
+    canvas.getContext("2d").drawImage img, 0, 0
 
   socket.on "message", (data) ->
     switch data.act
@@ -89,6 +97,15 @@ window.addEventListener "load", (->
     clear canvas
   ), false
 
+  document.getElementById("save").addEventListener "click", ((e) ->
+    save canvas_others, "others"
+    save canvas, "mine"
+  ), false
+
+  document.getElementById("load").addEventListener "click", ((e) ->
+    load canvas_others, "others"
+    load canvas, "mine"
+  ), false
 
   colors = document.getElementById("colors").childNodes
   i = 0
