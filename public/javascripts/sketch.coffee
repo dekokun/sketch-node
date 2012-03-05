@@ -89,7 +89,6 @@ window.addEventListener "load", (->
   ), false
   clear_button = document.getElementById("clear")
   clear_button.addEventListener "click", ((e) ->
-    clear canvas_others
     clear canvas
   ), false
 

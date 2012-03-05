@@ -96,7 +96,6 @@
     }), false);
     clear_button = document.getElementById("clear");
     clear_button.addEventListener("click", (function(e) {
-      clear(canvas_others);
       return clear(canvas);
     }), false);
     document.getElementById("save").addEventListener("click", (function(e) {
