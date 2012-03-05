@@ -29,15 +29,15 @@
       return canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
     };
     save = function(canvas, key) {
-      var Base64Coded;
-      Base64Coded = canvas.toDataURL();
-      return window.localStorage[key] = Base64Coded;
+      var coded_canvas;
+      coded_canvas = canvas.toDataURL();
+      return window.localStorage[key] = coded_canvas;
     };
     load = function(canvas, key) {
-      var Data, img;
-      Data = window.localStorage[key];
+      var img, local_data;
+      local_data = window.localStorage[key];
       img = new Image();
-      img.src = Data;
+      img.src = local_data;
       return canvas.getContext("2d").drawImage(img, 0, 0);
     };
     socket.on("message", function(data) {
@@ -58,10 +58,6 @@
           ctx_others.closePath();
           return remote_down = false;
       }
-    });
-    socket.on("clear", function() {
-      clear(canvas_others);
-      return clear(canvas);
     });
     down = false;
     canvas.addEventListener("mousedown", (function(e) {
@@ -100,8 +96,6 @@
     }), false);
     clear_button = document.getElementById("clear");
     clear_button.addEventListener("click", (function(e) {
-      socket.emit("clear");
-      clear(canvas_others);
       return clear(canvas);
     }), false);
     document.getElementById("save").addEventListener("click", (function(e) {
