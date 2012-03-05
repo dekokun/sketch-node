@@ -1,7 +1,7 @@
 (function() {
 
   window.addEventListener("load", (function() {
-    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, remote_down, socket, test_image, _results;
+    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, remote_down, save, socket, test_image, _results;
     canvas = document.getElementById("canvas_mine");
     canvas_others = document.getElementById("canvas_others");
     canvas.width = window.innerWidth - 30;
@@ -27,6 +27,11 @@
     });
     clear = function(canvas) {
       return canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    };
+    save = function(canvas, key) {
+      var Base64Coded;
+      Base64Coded = canvas.toDataURL();
+      return window.localStorage[key] = Base64Coded;
     };
     socket.on("message", function(data) {
       switch (data.act) {
@@ -91,6 +96,10 @@
       socket.emit("clear");
       clear(canvas_others);
       return clear(canvas);
+    }), false);
+    document.getElementById("save").addEventListener("click", (function(e) {
+      save(canvas_others, "others");
+      return save(canvas, "mine");
     }), false);
     colors = document.getElementById("colors").childNodes;
     i = 0;
