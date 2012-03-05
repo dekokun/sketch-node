@@ -51,9 +51,6 @@ window.addEventListener "load", (->
         ctx_others.stroke()
         ctx_others.closePath()
         remote_down = false
-  socket.on "clear", ->
-    clear canvas_others
-    clear canvas
 
   down = false
   canvas.addEventListener "mousedown", ((e) ->
@@ -92,7 +89,6 @@ window.addEventListener "load", (->
   ), false
   clear_button = document.getElementById("clear")
   clear_button.addEventListener "click", ((e) ->
-    socket.emit "clear"
     clear canvas_others
     clear canvas
   ), false

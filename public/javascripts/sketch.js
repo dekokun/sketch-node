@@ -59,10 +59,6 @@
           return remote_down = false;
       }
     });
-    socket.on("clear", function() {
-      clear(canvas_others);
-      return clear(canvas);
-    });
     down = false;
     canvas.addEventListener("mousedown", (function(e) {
       down = true;
@@ -100,7 +96,6 @@
     }), false);
     clear_button = document.getElementById("clear");
     clear_button.addEventListener("click", (function(e) {
-      socket.emit("clear");
       clear(canvas_others);
       return clear(canvas);
     }), false);
