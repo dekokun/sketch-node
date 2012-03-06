@@ -1,7 +1,7 @@
 (function() {
 
   window.addEventListener("load", (function() {
-    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, load, remote_down, save, socket, test_image, _results;
+    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, i, load, mousedown, mousemove, mouseup, remote_down, save, socket, test_image, ua, _results;
     canvas = document.getElementById("canvas_mine");
     canvas_others = document.getElementById("canvas_others");
     canvas.width = window.innerWidth - 30;
@@ -14,6 +14,12 @@
     ctx.strokeStyle = "#9eala3";
     ctx_others.lineWidth = 1;
     ctx_others.strokeStyle = "#9eala3";
+    ua = navigator.userAgent;
+    if (ua.indexOf('iPhone') > -1 || ua.indexOf('iPad') > -1 || ua.indexOf('iPod') > -1) {
+      mousedown = "touchstart";
+      mousemove = "touchmove";
+      mouseup = "touchend";
+    }
     test_image = new Image;
     test_image.src = "/image/grade5-3.jpg";
     console.dir(test_image);
