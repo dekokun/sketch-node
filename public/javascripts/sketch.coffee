@@ -11,6 +11,12 @@ window.addEventListener "load", (->
   ctx.strokeStyle = "#9eala3"
   ctx_others.lineWidth = 1
   ctx_others.strokeStyle = "#9eala3"
+  ua =navigator.userAgent
+  if(ua.indexOf('iPhone') > -1 || ua.indexOf('iPad') > -1 || ua.indexOf('iPod')  > -1)
+    mousedown = "touchstart"
+    mousemove  = "touchmove"
+    mouseup   = "touchend"
+
 
   test_image = new Image
   test_image.src = "/image/grade5-3.jpg"
