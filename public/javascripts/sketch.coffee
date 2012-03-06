@@ -25,6 +25,14 @@ window.addEventListener "load", (->
 
   clear = (canvas)->
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
+  save = (canvas, key)->
+    coded_canvas = canvas.toDataURL()
+    window.localStorage[key] = coded_canvas
+  load = (canvas, key)->
+    local_data = window.localStorage[key]
+    img = new Image()
+    img.src = local_data
+    canvas.getContext("2d").drawImage img, 0, 0
 
   socket.on "message", (data) ->
     switch data.act
@@ -43,9 +51,6 @@ window.addEventListener "load", (->
         ctx_others.stroke()
         ctx_others.closePath()
         remote_down = false
-  socket.on "clear", ->
-    clear canvas_others
-    clear canvas
 
   down = false
   canvas.addEventListener "mousedown", ((e) ->
@@ -84,11 +89,18 @@ window.addEventListener "load", (->
   ), false
   clear_button = document.getElementById("clear")
   clear_button.addEventListener "click", ((e) ->
-    socket.emit "clear"
-    clear canvas_others
     clear canvas
   ), false
 
+  document.getElementById("save").addEventListener "click", ((e) ->
+    save canvas_others, "others"
+    save canvas, "mine"
+  ), false
+
+  document.getElementById("load").addEventListener "click", ((e) ->
+    load canvas_others, "others"
+    load canvas, "mine"
+  ), false
 
   colors = document.getElementById("colors").childNodes
   i = 0
