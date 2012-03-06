@@ -32,7 +32,8 @@ window.addEventListener "load", (->
     local_data = window.localStorage[key]
     img = new Image()
     img.src = local_data
-    canvas.getContext("2d").drawImage img, 0, 0
+    img.onload = ->
+      canvas.getContext("2d").drawImage img, 0, 0
 
   socket.on "message", (data) ->
     switch data.act

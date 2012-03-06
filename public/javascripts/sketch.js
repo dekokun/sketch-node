@@ -38,7 +38,9 @@
       local_data = window.localStorage[key];
       img = new Image();
       img.src = local_data;
-      return canvas.getContext("2d").drawImage(img, 0, 0);
+      return img.onload = function() {
+        return canvas.getContext("2d").drawImage(img, 0, 0);
+      };
     };
     socket.on("message", function(data) {
       switch (data.act) {
