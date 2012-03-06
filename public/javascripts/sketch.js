@@ -21,6 +21,7 @@
     test_image.onload = function() {
       return ctx_others.drawImage(test_image, 0, 0);
     };
+    down = false;
     remote_down = false;
     socket = io.connect();
     socket.on("connect", function(data) {
@@ -43,6 +44,40 @@
         return canvas.getContext("2d").drawImage(img, 0, 0);
       };
     };
+    drawStart = function(e) {
+      down = true;
+      ctx.beginPath();
+      ctx.moveTo(e.clientX, e.clientY);
+      return socket.emit("message", {
+        act: "down",
+        x: e.clientX,
+        y: e.clientY,
+        color: ctx.strokeStyle
+      });
+    };
+    drawContinue = function(e) {
+      if (!down) return;
+      console.log(e.clientX, e.clientY);
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
+      return socket.emit("message", {
+        act: "move",
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
+    drawStop = function(e) {
+      if (!down) return;
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
+      ctx.closePath();
+      down = false;
+      return socket.emit("message", {
+        act: "up",
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
     socket.on("message", function(data) {
       switch (data.act) {
         case "down":
@@ -62,41 +97,9 @@
           return remote_down = false;
       }
     });
-    down = false;
-    canvas.addEventListener("mousedown", (function(e) {
-      down = true;
-      ctx.beginPath();
-      ctx.moveTo(e.clientX, e.clientY);
-      return socket.emit("message", {
-        act: "down",
-        x: e.clientX,
-        y: e.clientY,
-        color: ctx.strokeStyle
-      });
-    }), false);
-    window.addEventListener("mousemove", (function(e) {
-      if (!down) return;
-      console.log(e.clientX, e.clientY);
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
-      return socket.emit("message", {
-        act: "move",
-        x: e.clientX,
-        y: e.clientY
-      });
-    }), false);
-    window.addEventListener("mouseup", (function(e) {
-      if (!down) return;
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
-      ctx.closePath();
-      down = false;
-      return socket.emit("message", {
-        act: "up",
-        x: e.clientX,
-        y: e.clientY
-      });
-    }), false);
+    canvas.addEventListener("mousedown", drawStart, false);
+    window.addEventListener("mousemove", drawContinue, false);
+    window.addEventListener("mouseup", drawStop, false);
     clear_button = document.getElementById("clear");
     clear_button.addEventListener("click", (function(e) {
       return clear(canvas);

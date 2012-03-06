@@ -19,6 +19,7 @@ window.addEventListener "load", (->
   test_image.onload = ->
     ctx_others.drawImage test_image, 0, 0
 
+  down = false
   remote_down = false
   socket = io.connect()
   socket.on "connect", (data) ->
@@ -35,6 +36,40 @@ window.addEventListener "load", (->
     img.src = local_data
     img.onload = ->
       canvas.getContext("2d").drawImage img, 0, 0
+
+  drawStart = (e) ->
+    down = true
+    ctx.beginPath()
+    ctx.moveTo e.clientX, e.clientY
+    socket.emit "message",{
+      act: "down"
+      x: e.clientX
+      y: e.clientY
+      color: ctx.strokeStyle
+    }
+
+  drawContinue = (e) ->
+    return  unless down
+    console.log e.clientX, e.clientY
+    ctx.lineTo e.clientX, e.clientY
+    ctx.stroke()
+    socket.emit "message", {
+      act: "move"
+      x: e.clientX
+      y: e.clientY
+    }
+
+  drawStop = (e) ->
+    return  unless down
+    ctx.lineTo e.clientX, e.clientY
+    ctx.stroke()
+    ctx.closePath()
+    down = false
+    socket.emit "message", {
+      act: "up"
+      x: e.clientX
+      y: e.clientY
+    }
 
   socket.on "message", (data) ->
     switch data.act
@@ -54,41 +89,10 @@ window.addEventListener "load", (->
         ctx_others.closePath()
         remote_down = false
 
-  down = false
-  canvas.addEventListener "mousedown", ((e) ->
-    down = true
-    ctx.beginPath()
-    ctx.moveTo e.clientX, e.clientY
-    socket.emit "message",{
-      act: "down"
-      x: e.clientX
-      y: e.clientY
-      color: ctx.strokeStyle
-    }
-  ), false
-  window.addEventListener "mousemove", ((e) ->
-    return  unless down
-    console.log e.clientX, e.clientY
-    ctx.lineTo e.clientX, e.clientY
-    ctx.stroke()
-    socket.emit "message", {
-      act: "move"
-      x: e.clientX
-      y: e.clientY
-    }
-  ), false
-  window.addEventListener "mouseup", ((e) ->
-    return  unless down
-    ctx.lineTo e.clientX, e.clientY
-    ctx.stroke()
-    ctx.closePath()
-    down = false
-    socket.emit "message", {
-      act: "up"
-      x: e.clientX
-      y: e.clientY
-    }
-  ), false
+  canvas.addEventListener "mousedown", drawStart, false
+  window.addEventListener "mousemove", drawContinue, false
+  window.addEventListener "mouseup", drawStop, false
+
   clear_button = document.getElementById("clear")
   clear_button.addEventListener "click", ((e) ->
     clear canvas
