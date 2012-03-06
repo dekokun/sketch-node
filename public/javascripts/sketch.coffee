@@ -92,6 +92,9 @@ window.addEventListener "load", (->
   canvas.addEventListener "mousedown", drawStart, false
   window.addEventListener "mousemove", drawContinue, false
   window.addEventListener "mouseup", drawStop, false
+  canvas.addEventListener "touchstart", drawStart, false
+  window.addEventListener "touchmove", drawContinue, false
+  window.addEventListener "touchend", drawStop, false
 
   clear_button = document.getElementById("clear")
   clear_button.addEventListener "click", ((e) ->
