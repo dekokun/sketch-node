@@ -1,7 +1,7 @@
 (function() {
 
   window.addEventListener("load", (function() {
-    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, drawContinue, drawStart, drawStop, i, load, remote_down, save, socket, test_image, ua, _results;
+    var canvas, canvas_others, clear, clear_button, color, colors, ctx, ctx_others, down, drawContinue, drawStart, drawStop, i, iDrawContinue, load, remote_down, save, socket, test_image, ua, _results;
     canvas = document.getElementById("canvas_mine");
     canvas_others = document.getElementById("canvas_others");
     canvas.width = window.innerWidth - 30;
@@ -66,6 +66,10 @@
         y: e.clientY
       });
     };
+    iDrawContinue = function(e) {
+      e.preventDefault();
+      return drawContinue(e);
+    };
     drawStop = function(e) {
       if (!down) return;
       ctx.lineTo(e.clientX, e.clientY);
@@ -101,7 +105,7 @@
     window.addEventListener("mousemove", drawContinue, false);
     window.addEventListener("mouseup", drawStop, false);
     canvas.addEventListener("touchstart", drawStart, false);
-    window.addEventListener("touchmove", drawContinue, false);
+    window.addEventListener("touchmove", iDrawContinue, false);
     window.addEventListener("touchend", drawStop, false);
     clear_button = document.getElementById("clear");
     clear_button.addEventListener("click", (function(e) {

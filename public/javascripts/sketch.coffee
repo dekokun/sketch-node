@@ -59,6 +59,10 @@ window.addEventListener "load", (->
       y: e.clientY
     }
 
+  iDrawContinue = (e) ->
+    e.preventDefault()
+    drawContinue(e)
+
   drawStop = (e) ->
     return  unless down
     ctx.lineTo e.clientX, e.clientY
@@ -93,7 +97,7 @@ window.addEventListener "load", (->
   window.addEventListener "mousemove", drawContinue, false
   window.addEventListener "mouseup", drawStop, false
   canvas.addEventListener "touchstart", drawStart, false
-  window.addEventListener "touchmove", drawContinue, false
+  window.addEventListener "touchmove", iDrawContinue, false
   window.addEventListener "touchend", drawStop, false
 
   clear_button = document.getElementById("clear")
