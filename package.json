@@ -6,10 +6,11 @@
       "express": ">= 0.0.1"
     , "jade": ">= 0.0.1"
     , "socket.io": ">= 0.0.1"
-    , "jasmine-node": ">= 0.0.1"
+    , "mocha": ">= 0.0.1"
+    , "should": ">= 0.0.1"
   }
   , "scripts": {
-      "test": "jasmine-node --coffee spec"
+      "test": "mocha"
     , "start": "node app.js"
   }
 }
