@@ -16,14 +16,14 @@
       render: function(view, vars) {}
     };
     return describe("index", function() {
-      it("should be title Sketch", function(done) {
+      it("タイトルがスケッチ", function(done) {
         res.render = function(view, vars) {
           view.should.equal("index");
           return done();
         };
         return routes.index(req, res);
       });
-      return it("should vbe view index", function(done) {
+      return it("indexのviewが呼び出されていること", function(done) {
         res.render = function(view, vars) {
           view.should.equal("index");
           return done();

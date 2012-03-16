@@ -12,13 +12,13 @@ describe "routes", ->
       #do nothing
 
   describe "index", ->
-    it "should be title Sketch", (done) ->
+    it "タイトルがスケッチ", (done) ->
       res.render = (view, vars) ->
         view.should.equal "index"
         done()
       routes.index(req, res)
 
-    it "should vbe view index", (done) ->
+    it "indexのviewが呼び出されていること", (done) ->
       res.render = (view, vars) ->
         view.should.equal "index"
         done()
