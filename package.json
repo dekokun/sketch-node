@@ -10,7 +10,7 @@
     , "should": ">= 0.0.1"
   }
   , "scripts": {
-      "test": "mocha"
+      "test": "mocha -s 10 -R spec"
     , "start": "node app.js"
   }
 }
