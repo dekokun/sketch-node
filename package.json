@@ -9,7 +9,7 @@
     , "jasmine-node": ">= 0.0.1"
   }
   , "scripts": {
-      "test": "jasmine-node --coffee spec"
+      "test": "mocha -s 10"
     , "start": "node app.js"
   }
 }
