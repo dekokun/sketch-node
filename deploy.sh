@@ -46,7 +46,7 @@ case $1 in
     npm test
     jscoverage lib lib-cov
     TEST_COV=1 mocha -R html-cov test/*.js > coverage.html && open coverage.html
-    rm -rf model-cov
+    rm -rf lib-cov
     ;;
   develop)
     git checkout $DEVELOP_BRANCH || exit 1
