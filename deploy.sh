@@ -1,4 +1,4 @@
-DEVELOP_URL=http://127.0.0.1:5001/
+DEVELOP_URL=http://127.0.0.1:3000/
 PRODUCT_URL=http://deep-dusk-9615.herokuapp.com/
 TRAVIS_URL=http://travis-ci.org/#!/dekokun/sketch-node
 NOW_BRANCH=`cat .git/HEAD | cut -d'/' -f3`
