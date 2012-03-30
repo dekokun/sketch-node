@@ -51,8 +51,8 @@ case $1 in
   develop)
     git checkout $DEVELOP_BRANCH || exit 1
     coffee -wc app.coffee &
-    coffee -wc routes/ &
-    coffee -wc model/ &
+    coffee -wc lib/routes/ &
+    coffee -wc lib/model/ &
     coffee -wc public/javascript/ &
     coffee -wc test/ &
     mongo_run=`ps aux | grep '[m]ongo'`

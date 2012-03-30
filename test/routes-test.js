@@ -1,7 +1,7 @@
 (function() {
   var routes, should;
 
-  routes = require("../routes/index");
+  routes = process.env.TEST_COV ? require("../lib-cov/routes/index") : require("../lib/routes/index");
 
   should = require("should");
 

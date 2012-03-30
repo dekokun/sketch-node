@@ -1,4 +1,4 @@
-routes = require "../routes/index"
+routes = if process.env.TEST_COV then require "../lib-cov/routes/index" else require "../lib/routes/index"
 should = require "should"
 
 describe "routes", ->

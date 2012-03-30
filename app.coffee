@@ -1,5 +1,5 @@
 express = require("express")
-routes = require("./routes")
+routes = require("./lib/routes")
 app = module.exports = express.createServer()
 app.configure ->
   app.set "views", __dirname + "/views"
